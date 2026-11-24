@@ -1,0 +1,236 @@
+
+:root {
+    --color-primary: #8b735b;
+    --color-primary-dark: #705a45;
+    --color-background: #f7f6f3;
+    --color-surface: #ffffff;
+    --color-text: #292722;
+    --color-muted: #858078;
+    --color-border: #e8e4dd;
+    --color-accent: #d8c7ae;
+    --border-radius: 12px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--color-background);
+    color: var(--color-text);
+    font-family: "Segoe UI", Arial, sans-serif;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+header {
+    padding-top: 35px !important;
+    padding-bottom: 25px !important;
+}
+
+header h1 {
+    color: var(--color-text);
+    font-weight: 700;
+    letter-spacing: 3px;
+}
+
+header p {
+    font-size: 15px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--color-muted) !important;
+}
+
+.navbar {
+    background-color: var(--color-surface) !important;
+    border: 1px solid var(--color-border);
+    padding: 12px 20px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.03);
+}
+
+.navbar-brand {
+    color: var(--color-primary) !important;
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.nav-link {
+    color: var(--color-text);
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--color-primary) !important;
+}
+
+aside .nav {
+    background-color: var(--color-surface) !important;
+    border: 1px solid var(--color-border);
+    min-height: 250px;
+}
+
+aside .nav-link {
+    padding: 9px 12px;
+    border-radius: 7px;
+}
+
+aside .nav-link:hover {
+    background-color: var(--color-background);
+}
+
+aside .fw-bold {
+    color: var(--color-primary);
+}
+
+main {
+    min-height: 400px;
+}
+
+h2, h3, h4, h5 {
+    color: var(--color-text);
+    font-weight: 600;
+}
+
+h2 {
+    margin-bottom: 20px;
+}
+
+.card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
+}
+
+.card-title {
+    font-weight: 600;
+}
+
+.card-text {
+    color: var(--color-muted);
+}
+
+.btn-primary {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--color-primary-dark);
+    border-color: var(--color-primary-dark);
+}
+
+.btn-outline-primary {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.form-control,
+.form-select {
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 10px 12px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 0.2rem rgba(139, 115, 91, 0.15);
+}
+
+.table {
+    background-color: var(--color-surface);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.table thead th {
+    background-color: #eeeae3;
+    color: var(--color-text);
+    font-weight: 600;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+/* Изображения */
+
+img {
+    max-width: 100%;
+}
+
+.card-img-top {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+.status-new {
+    color: #8a6b32;
+    background-color: #f8efd9;
+}
+
+.status-progress {
+    color: #356b8c;
+    background-color: #e2f0f7;
+}
+
+.status-completed {
+    color: #39734d;
+    background-color: #e3f1e6;
+}
+
+.alert {
+    border-radius: 9px;
+    border: none;
+}
+
+footer {
+    border-color: var(--color-border) !important;
+    margin-top: 40px !important;
+}
+
+footer p {
+    color: var(--color-muted);
+    font-size: 13px;
+}
+
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2.5rem;
+    }
+
+    .navbar {
+        padding: 10px;
+    }
+
+    aside {
+        margin-bottom: 15px;
+    }
+
+    main {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .card-img-top {
+        height: 180px;
+    }
+}

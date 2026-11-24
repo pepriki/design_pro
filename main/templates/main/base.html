@@ -1,0 +1,147 @@
+{% load django_bootstrap5 %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>
+        {% block title %}Главная{% endblock %} | Design.pro
+    </title>
+
+    {% bootstrap_css %}
+
+    <link rel="stylesheet"
+          href="{% static 'main/style.css' %}">
+
+    {% bootstrap_javascript %}
+</head>
+
+<body class="container-fluid">
+
+<header class="py-4">
+    <h1 class="display-4 text-center">
+        Design.pro
+    </h1>
+    <p class="text-center text-muted">
+        Студия дизайна интерьера
+    </p>
+</header>
+
+<nav class="navbar navbar-expand-md navbar-light bg-light rounded mb-4">
+    <div class="container-fluid">
+
+        <a class="navbar-brand" href="{% url 'home' %}">
+            Главная
+        </a>
+
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end"
+             id="navbarNav">
+
+            <div class="navbar-nav">
+
+                {% if user.is_authenticated %}
+
+                <a class="nav-link" href="#">
+                    Мои заявки
+                </a>
+
+                <a class="nav-link" href="#">
+                    Создать заявку
+                </a>
+
+                {% if user.is_staff %}
+                <a class="nav-link" href="/superadmin">
+                    Панель администратора
+                </a>
+                {% endif %}
+
+                <form method="post" action="#" class="d-flex align-items-center">
+                    {% csrf_token %}
+                    <button type="submit"
+                            class="btn btn-outline-danger btn-sm">
+                        Выйти
+                    </button>
+                </form>
+
+                {% else %}
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">
+                        Регистрация
+                    </a>
+                </li>
+
+                <a class="nav-link" href="#">
+                    Вход
+                </a>
+
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="row">
+
+    <aside class="col-md-2 mb-3">
+        <nav class="nav flex-column bg-light rounded p-3">
+
+            <span class="nav-link fw-bold">
+                Навигация
+            </span>
+
+            <a class="nav-link" href="{% url 'home' %}">
+                Главная
+            </a>
+
+            {% if user.is_authenticated %}
+            <a class="nav-link" href="#">
+                Мои заявки
+            </a>
+            {% endif %}
+
+            <span class="nav-link fw-bold mt-3">
+                О студии
+            </span>
+
+            <a class="nav-link" href="#">
+                О нас
+            </a>
+
+            <a class="nav-link" href="#">
+                Контакты
+            </a>
+
+        </nav>
+    </aside>
+
+    <main class="col-md-10 py-2">
+
+        {% bootstrap_messages %}
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+</div>
+
+<footer class="mt-4 py-3 border-top">
+    <p class="text-center text-muted">
+        &copy; Design.pro — Студия дизайна интерьера
+    </p>
+</footer>
+
+</body>
+</html>
