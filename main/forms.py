@@ -1,10 +1,10 @@
-
 import re
 
 from django import forms
 from django.contrib.auth import password_validation
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from .models import Category, DesignRequest
 
 
 class RegisterForm(forms.ModelForm):
@@ -114,3 +114,35 @@ class RegisterForm(forms.ModelForm):
             user.save()
 
         return user
+
+
+class DesignRequestForm(forms.ModelForm):
+    class Meta:
+        model = DesignRequest
+        fields = ['name', 'description', 'category', 'image']
+        labels = {
+            'name': 'Название заявки',
+            'description': 'Описание помещения',
+            'category': 'Категория дизайна',
+            'image': 'Фотография помещения или план',
+        }
+        widgets = {
+            'description': forms.Textarea(attrs={'rows': 4}),
+        }
+
+    def clean_image(self):
+        image = self.cleaned_data['image']
+
+        allowed_formats = ['JPEG', 'PNG', 'BMP']
+
+        if image.image.format not in allowed_formats:
+            raise forms.ValidationError(
+                'Допустимые форматы: JPG, JPEG, PNG, BMP.'
+            )
+
+        if image.size > 2 * 1024 * 1024:
+            raise forms.ValidationError(
+                'Размер изображения не должен превышать 2 МБ.'
+            )
+
+        return image

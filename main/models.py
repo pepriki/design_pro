@@ -1,4 +1,3 @@
-from django.db import models
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -8,7 +7,8 @@ class Category(models.Model):
     name = models.CharField(
         max_length=100,
         unique=True,
-        verbose_name='Название категории')
+        verbose_name='Название категории'
+    )
 
     def __str__(self):
         return self.name
@@ -16,9 +16,9 @@ class Category(models.Model):
 
 class DesignRequest(models.Model):
     STATUS_CHOICES = [
-        ('new', 'Новая'),
-        ('in_progress', 'Принято в работу'),
-        ('completed', 'Выполнено'),
+        ('Новая', 'Новая'),
+        ('Принято в работу', 'Принято в работу'),
+        ('Выполнено', 'Выполнено'),
     ]
 
     user = models.ForeignKey(

@@ -1,3 +1,4 @@
+
 {% load django_bootstrap5 %}
 {% load static %}
 
@@ -12,10 +13,7 @@
     </title>
 
     {% bootstrap_css %}
-
-    <link rel="stylesheet"
-          href="{% static 'main/style.css' %}">
-
+    <link rel="stylesheet" href="{% static 'main/style.css' %}">
     {% bootstrap_javascript %}
 </head>
 
@@ -51,39 +49,30 @@
 
                 {% if user.is_authenticated %}
 
-                <a class="nav-link" href="#">
-                    Мои заявки
-                </a>
+                    {% if user.is_staff %}
+                        <a class="nav-link" href="/superadmin">
+                            Панель администратора
+                        </a>
+                    {% endif %}
 
-                <a class="nav-link" href="#">
-                    Создать заявку
-                </a>
-
-                {% if user.is_staff %}
-                <a class="nav-link" href="/superadmin">
-                    Панель администратора
-                </a>
-                {% endif %}
-
-                <form method="post" action="#" class="d-flex align-items-center">
-                    {% csrf_token %}
-                    <button type="submit"
-                            class="btn btn-outline-danger btn-sm">
-                        Выйти
-                    </button>
-                </form>
+                    <form method="post" action="{% url 'logout' %}"
+                          class="d-flex align-items-center">
+                        {% csrf_token %}
+                        <button type="submit"
+                                class="btn btn-outline-danger btn-sm">
+                            Выйти
+                        </button>
+                    </form>
 
                 {% else %}
 
-                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">
+                        Войти
+                    </a>
+
                     <a class="nav-link" href="{% url 'register' %}">
                         Регистрация
                     </a>
-                </li>
-
-                <a class="nav-link" href="#">
-                    Вход
-                </a>
 
                 {% endif %}
 
@@ -104,12 +93,6 @@
             <a class="nav-link" href="{% url 'home' %}">
                 Главная
             </a>
-
-            {% if user.is_authenticated %}
-            <a class="nav-link" href="#">
-                Мои заявки
-            </a>
-            {% endif %}
 
             <span class="nav-link fw-bold mt-3">
                 О студии
