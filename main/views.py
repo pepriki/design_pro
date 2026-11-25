@@ -1,12 +1,12 @@
-
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from .forms import RegisterForm, DesignRequestForm, AdminRequestForm, CategoryForm
+from .models import DesignRequest, Category
+from django.contrib.auth.decorators import user_passes_test
 
-from .forms import RegisterForm, DesignRequestForm
-from .models import DesignRequest
 
 
 def home(request):
@@ -92,6 +92,7 @@ def create_request(request):
         'form': form
     })
 
+
 @login_required(login_url='login')
 def delete_request(request, request_id):
     if request.method == 'POST':
@@ -111,3 +112,83 @@ def delete_request(request, request_id):
             )
 
     return redirect('my_requests')
+
+
+def is_admin(user):
+    return user.is_staff
+
+@login_required(login_url='login')
+def admin_panel(request):
+    if not request.user.is_staff:
+        return redirect('home')
+
+    all_requests = DesignRequest.objects.all()
+    categories = Category.objects.all()
+
+    return render(request, 'main/admin_panel.html', {
+        'requests': all_requests,
+        'categories': categories,
+        'category_form': CategoryForm(),
+    })
+
+@login_required(login_url='login')
+def update_request(request, request_id):
+    if not request.user.is_staff:
+        return redirect('home')
+
+    design_request = get_object_or_404(
+        DesignRequest,
+        id=request_id,
+        status='new'
+    )
+
+    if request.method == 'POST':
+        form = AdminRequestForm(
+            request.POST,
+            request.FILES,
+            instance=design_request
+        )
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Заявка обновлена.')
+            return redirect('admin_panel')
+    else:
+        form = AdminRequestForm(instance=design_request)
+
+    return render(request, 'main/update_request.html', {
+        'form': form,
+        'design_request': design_request
+    })
+
+@login_required(login_url='login')
+def add_category(request):
+    if not request.user.is_staff:
+        return redirect('home')
+
+    if request.method == 'POST':
+        form = CategoryForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Категория добавлена.')
+        else:
+            messages.error(request, 'Не удалось добавить категорию.')
+
+    return redirect('admin_panel')
+
+
+@login_required(login_url='login')
+def delete_category(request, category_id):
+    if not request.user.is_staff:
+        return redirect('home')
+
+    if request.method == 'POST':
+        category = get_object_or_404(Category, id=category_id)
+        category.delete()
+        messages.success(
+            request,
+            'Категория и связанные с ней заявки удалены.'
+        )
+
+    return redirect('admin_panel')

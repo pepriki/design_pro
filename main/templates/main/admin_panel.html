@@ -1,0 +1,100 @@
+
+{% extends 'main/base.html' %}
+
+{% block title %}Административная панель{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">Административная панель</h2>
+
+<h4 class="mb-3">Все заявки пользователей</h4>
+
+{% if requests %}
+<div class="table-responsive">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Дата создания</th>
+                <th>Пользователь</th>
+                <th>Название</th>
+                <th>Описание</th>
+                <th>Категория</th>
+                <th>Изображение</th>
+                <th>Статус</th>
+                <th>Действие</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for design_request in requests %}
+            <tr>
+                <td>{{ design_request.created_at }}</td>
+                <td>{{ design_request.user.username }}</td>
+                <td>{{ design_request.name }}</td>
+                <td>{{ design_request.description }}</td>
+                <td>{{ design_request.category }}</td>
+                <td>
+                    {% if design_request.image %}
+                        <a href="{{ design_request.image.url }}" target="_blank">
+                            Посмотреть
+                        </a>
+                    {% else %}
+                        Нет изображения
+                    {% endif %}
+                </td>
+                <td>{{ design_request.get_status_display }}</td>
+                <td>
+                    {% if design_request.status == 'new' %}
+                        <a href="{% url 'update_request' design_request.id %}"
+                           class="btn btn-primary btn-sm">
+                            Обработать
+                        </a>
+                    {% else %}
+                        —
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+    <p class="text-muted">Заявок пока нет.</p>
+{% endif %}
+
+<hr class="my-4">
+
+<h4 class="mb-3">Управление категориями</h4>
+
+<h5>Добавить категорию</h5>
+
+<form method="post" action="{% url 'add_category' %}" class="mb-4">
+    {% csrf_token %}
+    {{ category_form.as_p }}
+
+    <button type="submit" class="btn btn-success">
+        Добавить категорию
+    </button>
+</form>
+
+<h5>Существующие категории</h5>
+
+{% for category in categories %}
+    <div class="d-flex align-items-center justify-content-between border rounded p-2 mb-2">
+        <span>{{ category.name }}</span>
+
+        <form method="post"
+              action="{% url 'delete_category' category.id %}"
+              onsubmit="return confirm('Удалить категорию и все связанные с ней заявки?');">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger btn-sm">
+                Удалить
+            </button>
+        </form>
+    </div>
+{% empty %}
+    <p>Категорий пока нет.</p>
+
+{% endfor %}
+
+{% endblock %}

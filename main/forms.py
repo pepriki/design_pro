@@ -7,6 +7,7 @@ from django.core.exceptions import ValidationError
 from .models import Category, DesignRequest
 
 
+
 class RegisterForm(forms.ModelForm):
     email = forms.EmailField(
         required=True,
@@ -146,3 +147,44 @@ class DesignRequestForm(forms.ModelForm):
             )
 
         return image
+
+
+class AdminRequestForm(forms.ModelForm):
+    class Meta:
+        model = DesignRequest
+        fields = ['status', 'admin_comment', 'design_image']
+        labels = {
+            'status': 'Новый статус',
+            'admin_comment': 'Комментарий администратора',
+            'design_image': 'Готовый дизайн',
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        status = cleaned_data.get('status')
+        comment = cleaned_data.get('admin_comment')
+        design_image = cleaned_data.get('design_image')
+
+        if status == 'in_progress' and not comment:
+            self.add_error(
+                'admin_comment',
+                'Для принятия заявки в работу укажите комментарий.'
+            )
+
+        if status == 'completed' and not design_image:
+            self.add_error(
+                'design_image',
+                'Для завершения заявки загрузите готовый дизайн.'
+            )
+
+        return cleaned_data
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ['name']
+        labels = {
+            'name': 'Название категории',
+        }
+
