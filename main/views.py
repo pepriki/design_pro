@@ -5,12 +5,22 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import RegisterForm, DesignRequestForm, AdminRequestForm, CategoryForm
 from .models import DesignRequest, Category
-from django.contrib.auth.decorators import user_passes_test
-
-
 
 def home(request):
-    return render(request, 'main/home.html')
+    completed_requests = DesignRequest.objects.filter(
+        status='completed'
+    ).order_by('-created_at')[:4]
+
+    in_progress_count = DesignRequest.objects.filter(
+        status='in_progress'
+    ).count()
+
+    context = {
+        'completed_requests': completed_requests,
+        'in_progress_count': in_progress_count,
+    }
+
+    return render(request, 'main/home.html', context)
 
 
 def register(request):
@@ -139,7 +149,6 @@ def update_request(request, request_id):
     design_request = get_object_or_404(
         DesignRequest,
         id=request_id,
-        status='new'
     )
 
     if request.method == 'POST':

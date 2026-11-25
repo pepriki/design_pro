@@ -44,7 +44,7 @@
                 </td>
                 <td>{{ design_request.get_status_display }}</td>
                 <td>
-                    {% if design_request.status == 'new' %}
+                    {% if design_request.status != 'completed' %}
                         <a href="{% url 'update_request' design_request.id %}"
                            class="btn btn-primary btn-sm">
                             Обработать

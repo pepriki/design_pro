@@ -152,7 +152,7 @@ class DesignRequestForm(forms.ModelForm):
 class AdminRequestForm(forms.ModelForm):
     class Meta:
         model = DesignRequest
-        fields = ['status', 'admin_comment', 'design_image']
+        fields = ['status', 'admin_comment','image', 'design_image']
         labels = {
             'status': 'Новый статус',
             'admin_comment': 'Комментарий администратора',

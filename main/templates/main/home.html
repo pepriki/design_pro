@@ -1,8 +1,55 @@
+
 {% extends 'main/base.html' %}
 
 {% block title %}Главная — Design.pro{% endblock %}
 
 {% block content %}
-    <h1>Добро пожаловать в Design.pro</h1>
-    <p>Студия дизайна интерьеров</p>
+
+<h1 class="mb-3">Добро пожаловать в Design.pro</h1>
+
+<p class="lead">Студия дизайна интерьеров</p>
+
+<div class="alert alert-info">
+    Заявок принято в работу:
+    <strong>{{ in_progress_count }}</strong>
+</div>
+
+<h3 class="mb-3">Выполненные проекты</h3>
+
+<div class="row">
+    {% for design_request in completed_requests %}
+        <div class="col-md-6 col-lg-3 mb-4">
+            <div class="card h-100">
+                {% if design_request.design_image %}
+                    <img src="{{ design_request.design_image.url }}"
+                         class="card-img-top"
+                         alt="{{ design_request.name }}"
+                         style="height: 180px; object-fit: cover;">
+                {% elif design_request.image %}
+                    <img src="{{ design_request.image.url }}"
+                         class="card-img-top"
+                         alt="{{ design_request.name }}"
+                         style="height: 180px; object-fit: cover;">
+                {% endif %}
+
+                <div class="card-body">
+                    <h5 class="card-title">
+                        {{ design_request.name }}
+                    </h5>
+
+                    <p class="card-text">
+                        Категория: {{ design_request.category }}
+                    </p>
+
+                    <p class="text-muted">
+                        {{ design_request.created_at|date:"d.m.Y H:i" }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p>Пока нет выполненных проектов.</p>
+    {% endfor %}
+</div>
+
 {% endblock %}

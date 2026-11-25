@@ -16,9 +16,9 @@ class Category(models.Model):
 
 class DesignRequest(models.Model):
     STATUS_CHOICES = [
-        ('Новая', 'Новая'),
-        ('Принято в работу', 'Принято в работу'),
-        ('Выполнено', 'Выполнено'),
+        ('new', 'Новая'),
+        ('in_progress', 'Принято в работу'),
+        ('completed', 'Выполнено'),
     ]
 
     user = models.ForeignKey(
@@ -62,7 +62,7 @@ class DesignRequest(models.Model):
     status = models.CharField(
         max_length=30,
         choices=STATUS_CHOICES,
-        default='Новая',
+        default='new',
         verbose_name='Статус'
     )
 
