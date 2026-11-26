@@ -17,13 +17,11 @@ class RegisterForm(forms.ModelForm):
     password1 = forms.CharField(
         label='Пароль',
         widget=forms.PasswordInput,
-        help_text=password_validation.password_validators_help_text_html()
     )
 
     password2 = forms.CharField(
         label='Пароль (повторно)',
         widget=forms.PasswordInput,
-        help_text='Введите тот же пароль ещё раз'
     )
 
     consent = forms.BooleanField(
@@ -48,7 +46,7 @@ class RegisterForm(forms.ModelForm):
     def clean_username(self):
         username = self.cleaned_data['username']
 
-        if not re.fullmatch(r'[A-Za-z-]+', username):
+        if not re.fullmatch(r'[A-z -]+', username):
             raise ValidationError(
                 'Логин должен содержать только латинские буквы и дефис.'
             )
@@ -61,7 +59,7 @@ class RegisterForm(forms.ModelForm):
     def clean_first_name(self):
         value = self.cleaned_data['first_name']
 
-        if not re.fullmatch(r'[А-Яа-яЁё -]+', value):
+        if not re.fullmatch(r'[А-яЁё -]+', value):
             raise ValidationError(
                 'Имя должно содержать кириллицу, пробелы и дефисы.'
             )
@@ -71,7 +69,7 @@ class RegisterForm(forms.ModelForm):
     def clean_last_name(self):
         value = self.cleaned_data['last_name']
 
-        if not re.fullmatch(r'[А-Яа-яЁё -]+', value):
+        if not re.fullmatch(r'[А-яЁё -]+', value):
             raise ValidationError(
                 'Фамилия должна содержать кириллицу, пробелы и дефисы.'
             )
